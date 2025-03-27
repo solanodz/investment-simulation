@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Stack
+
+- NextJS project with JavaScript
+- Shadcn UI components
+- Tailwind CSS
+- Recharts
+- Binance API to get crypto currencies balances
+- Lucide react icons
+
+# Description of the app
+
+This app is a simulation of how much money a user colud have made if he would invested a certain amount of money in a certain time.The user should select a crypto coming from the coingecko API, fill the amount and date field and once he clics on Calcular button, he would have a recharts chart with the information of his simulated investment.
