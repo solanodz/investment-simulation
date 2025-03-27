@@ -21,6 +21,24 @@ export async function GET(request) {
             }, { status: 400 });
         }
 
+        // Check if we're running on Vercel production environment
+        // This helps avoid API calls that will likely fail
+        const isVercelProduction = process.env.VERCEL_ENV === 'production';
+
+        // If on Vercel, skip the actual API call and use simulated data directly
+        if (isVercelProduction) {
+            console.log('Running on Vercel production, using simulated data instead of Binance API');
+            return NextResponse.json({
+                success: true,
+                data: generateSimulatedPriceHistory(
+                    symbol,
+                    requestedStartTime,
+                    requestedEndTime
+                ),
+                isSimulated: true
+            });
+        }
+
         // Add USDT to symbol if it doesn't already have it
         const fullSymbol = symbol.endsWith('USDT') ? symbol : `${symbol}USDT`;
 

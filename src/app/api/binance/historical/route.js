@@ -146,8 +146,11 @@ export async function GET(request) {
         const dateObj = new Date(date);
         const today = new Date();
 
-        // Si es una fecha antigua, usamos datos históricos
-        if (dateObj < new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)) {
+        // Check if we're running on Vercel production environment
+        const isVercelProduction = process.env.VERCEL_ENV === 'production';
+
+        // Si estamos en Vercel o es una fecha antigua, usamos datos históricos
+        if (isVercelProduction || dateObj < new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)) {
             return NextResponse.json({
                 success: true,
                 data: generateHistoricalDataSeries(coinId, dateObj, today),

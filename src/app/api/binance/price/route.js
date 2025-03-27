@@ -33,6 +33,25 @@ export async function GET(request) {
             }, { status: 400 });
         }
 
+        // Check if we're running on Vercel production environment
+        const isVercelProduction = process.env.VERCEL_ENV === 'production';
+
+        // If on Vercel, use fallback data directly
+        if (isVercelProduction) {
+            console.log('Running on Vercel production, using fallback price data');
+            // Return fallback price
+            const symbol = coinId.replace('USDT', '');
+            const fallbackPrice = currentPriceFallbacks[symbol] || 100;
+            const result = {};
+            result[coinId.toLowerCase()] = { usd: fallbackPrice };
+
+            return NextResponse.json({
+                success: true,
+                data: result,
+                isSimulated: true
+            });
+        }
+
         // Format symbol for Binance - add USDT if not already present
         const symbol = coinId.endsWith('USDT') ? coinId : `${coinId}USDT`;
 
